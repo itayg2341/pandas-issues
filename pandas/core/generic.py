@@ -1615,8 +1615,7 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
         axis_int = self._get_axis_number(axis)
 
         return (
-            key is not None
-            and is_hashable(key)
+            is_hashable(key)
             and key in self.axes[axis_int].names
             and not self._is_label_reference(key, axis=axis_int)
         )
@@ -1646,8 +1645,7 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
         other_axes = (ax for ax in range(self._AXIS_LEN) if ax != axis_int)
 
         return (
-            key is not None
-            and is_hashable(key)
+            is_hashable(key)
             and any(key in self.axes[ax] for ax in other_axes)
         )
 
