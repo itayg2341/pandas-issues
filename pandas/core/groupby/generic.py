@@ -504,6 +504,12 @@ class SeriesGroupBy(GroupBy[Series]):
                 #  inference. We default to using the existing dtype.
                 #  xref GH#51445
                 obj = self._obj_with_exclusions
+                if not self.as_index:
+                    # Match behavior of built-in aggregators for empty DataFrames
+                    # when as_index=False
+                    return self.obj._constructor_expanddim(
+                        {obj.name: []}, index=self._grouper.result_index
+                    ).reset_index()
                 return self.obj._constructor(
                     [],
                     name=self.obj.name,
