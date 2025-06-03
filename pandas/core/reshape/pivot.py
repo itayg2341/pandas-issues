@@ -609,9 +609,12 @@ def _generate_marginal_results(
         margin_keys = table.columns
 
     if len(cols) > 0:
-        row_margin = (
-            data[cols + values].groupby(cols, observed=observed).agg(aggfunc, **kwargs)
-        )
+        # GH #5: Correctly calculate margins for NA groups with count
+        _gb = data[cols + values].groupby(cols, observed=observed)
+        if aggfunc == "count" or aggfunc == len:
+            row_margin = _gb.count()
+        else:
+            row_margin = _gb.agg(aggfunc, **kwargs)
         row_margin = row_margin.stack()
 
         # GH#26568. Use names instead of indices in case of numeric names
