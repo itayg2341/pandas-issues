@@ -393,7 +393,8 @@ def __internal_pivot_table(
             cols=columns,
             aggfunc=aggfunc,
             kwargs=kwargs,
-            observed=dropna,
+            observed=observed,
+            dropna=dropna,
             margins_name=margins_name,
             fill_value=fill_value,
         )
@@ -420,6 +421,7 @@ def _add_margins(
     aggfunc,
     kwargs,
     observed: bool,
+    dropna: bool,
     margins_name: Hashable = "All",
     fill_value=None,
 ):
@@ -460,6 +462,7 @@ def _add_margins(
             aggfunc,
             kwargs,
             observed,
+            dropna,
             margins_name,
         )
         if not isinstance(marginal_result_set, tuple):
@@ -469,7 +472,7 @@ def _add_margins(
         # no values, and table is a DataFrame
         assert isinstance(table, ABCDataFrame)
         marginal_result_set = _generate_marginal_results_without_values(
-            table, data, rows, cols, aggfunc, kwargs, observed, margins_name
+            table, data, rows, cols, aggfunc, kwargs, observed, dropna, margins_name
         )
         if not isinstance(marginal_result_set, tuple):
             return marginal_result_set
@@ -537,6 +540,7 @@ def _generate_marginal_results(
     aggfunc,
     kwargs,
     observed: bool,
+    dropna: bool,
     margins_name: Hashable = "All",
 ):
     margin_keys: list | Index
@@ -551,7 +555,7 @@ def _generate_marginal_results(
         if len(rows) > 0:
             margin = (
                 data[rows + values]
-                .groupby(rows, observed=observed)
+                .groupby(rows, observed=observed, dropna=dropna)
                 .agg(aggfunc, **kwargs)
             )
             cat_axis = 1
@@ -567,7 +571,7 @@ def _generate_marginal_results(
         else:
             margin = (
                 data[cols[:1] + values]
-                .groupby(cols[:1], observed=observed)
+                .groupby(cols[:1], observed=observed, dropna=dropna)
                 .agg(aggfunc, **kwargs)
                 .T
             )
@@ -610,7 +614,7 @@ def _generate_marginal_results(
 
     if len(cols) > 0:
         row_margin = (
-            data[cols + values].groupby(cols, observed=observed).agg(aggfunc, **kwargs)
+            data[cols + values].groupby(cols, observed=observed, dropna=dropna).agg(aggfunc, **kwargs)
         )
         row_margin = row_margin.stack()
 
@@ -632,6 +636,7 @@ def _generate_marginal_results_without_values(
     aggfunc,
     kwargs,
     observed: bool,
+    dropna: bool,
     margins_name: Hashable = "All",
 ):
     margin_keys: list | Index
@@ -645,7 +650,7 @@ def _generate_marginal_results_without_values(
             return (margins_name,) + ("",) * (len(cols) - 1)
 
         if len(rows) > 0:
-            margin = data.groupby(rows, observed=observed)[rows].apply(
+            margin = data.groupby(rows, observed=observed, dropna=dropna)[rows].apply(
                 aggfunc, **kwargs
             )
             all_key = _all_key()
@@ -654,7 +659,7 @@ def _generate_marginal_results_without_values(
             margin_keys.append(all_key)
 
         else:
-            margin = data.groupby(level=0, observed=observed).apply(aggfunc, **kwargs)
+            margin = data.groupby(level=0, observed=observed, dropna=dropna).apply(aggfunc, **kwargs)
             all_key = _all_key()
             table[all_key] = margin
             result = table
@@ -665,7 +670,7 @@ def _generate_marginal_results_without_values(
         margin_keys = table.columns
 
     if len(cols):
-        row_margin = data.groupby(cols, observed=observed)[cols].apply(
+        row_margin = data.groupby(cols, observed=observed, dropna=dropna)[cols].apply(
             aggfunc, **kwargs
         )
     else:
