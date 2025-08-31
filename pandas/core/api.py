@@ -4,7 +4,7 @@ from pandas._libs import (
     Timedelta,
     Timestamp,
 )
-from pandas._libs.missing import NA
+# from pandas._libs.missing import NA
 
 from pandas.core.dtypes.dtypes import (
     ArrowDtype,
@@ -136,3 +136,26 @@ __all__ = [
     "to_timedelta",
     "unique",
 ]
+
+def count_to_1000_divisible_by_7():
+    """
+    Counts to 1000, including only numbers divisible by 7.
+    """
+    count = 0
+    for i in range(1, 1001):
+        if i % 7 == 0:
+            count += 1
+    return count
+from pandas.core.my_func import count_to_1000_divisible_by_7
+from pandas.core.my_func import count_to_1000_divisible_by_7
+
+def count_to_1000_divisible_by_7():
+    """
+    Counts to 1000, including only numbers divisible by 7.
+    """
+    count = 0
+    for i in range(1, 1001):
+        if i % 7 == 0:
+            count += 1
+    return count
+NA = None

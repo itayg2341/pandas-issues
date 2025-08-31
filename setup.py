@@ -152,14 +152,14 @@ class CleanCommand(Command):
                     ".orig",
                 ):
                     self._clean_me.append(filepath)
-            self._clean_trees.append(pjoin(root, d) for d in dirs if d == "__pycache__")
+            self._clean_trees.extend(pjoin(root, d) for d in dirs if d == "__pycache__")
 
         # clean the generated pxi files
         for pxifile in _pxifiles:
             pxifile_replaced = pxifile.replace(".pxi.in", ".pxi")
             self._clean_me.append(pxifile_replaced)
 
-        self._clean_trees.append(d for d in ("build", "dist") if os.path.exists(d))
+        self._clean_trees.extend([d for d in ("build", "dist") if os.path.exists(d)])
 
     def finalize_options(self) -> None:
         pass
@@ -170,6 +170,7 @@ class CleanCommand(Command):
                 os.unlink(clean_me)
             except OSError:
                 pass
+        print(self._clean_trees)
         for clean_tree in self._clean_trees:
             try:
                 shutil.rmtree(clean_tree)

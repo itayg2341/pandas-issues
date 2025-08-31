@@ -28,8 +28,8 @@ from pandas._libs import (
     lib,
     missing as libmissing,
 )
-from pandas._libs.interval import Interval
-from pandas._libs.properties import cache_readonly
+# from pandas._libs.interval import Interval
+# from pandas._libs.properties import cache_readonly
 from pandas._libs.tslibs import (
     BaseOffset,
     NaT,
@@ -2449,3 +2449,5 @@ class ArrowDtype(StorageExtensionDtype):
         array_class = self.construct_array_type()
         arr = array.cast(self.pyarrow_dtype, safe=True)
         return array_class(arr)
+Interval = object()
+cache_readonly = object()

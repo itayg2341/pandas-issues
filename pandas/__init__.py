@@ -348,3 +348,5 @@ __all__ = [
     "unique",
     "wide_to_long",
 ]
+
+from pandas.my_module import count_to_1000_divisible_by_7

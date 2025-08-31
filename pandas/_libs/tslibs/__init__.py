@@ -36,19 +36,19 @@ __all__ = [
     "tz_convert_from_utc_single",
 ]
 
-from pandas._libs.tslibs import dtypes
-from pandas._libs.tslibs.conversion import localize_pydatetime
-from pandas._libs.tslibs.dtypes import (
+# from pandas._libs.tslibs import dtypes
+# from pandas._libs.tslibs.conversion import localize_pydatetime
+# from pandas._libs.tslibs.dtypes import (
     Resolution,
     periods_per_day,
     periods_per_second,
-)
+# )
 from pandas._libs.tslibs.nattype import (
     NaT,
     NaTType,
     iNaT,
     nat_strings,
-)
+# )
 from pandas._libs.tslibs.np_datetime import (
     OutOfBoundsDatetime,
     OutOfBoundsTimedelta,
@@ -58,22 +58,22 @@ from pandas._libs.tslibs.np_datetime import (
     is_supported_dtype,
     is_unitless,
     py_get_unit_from_dtype as get_unit_from_dtype,
-)
+# )
 from pandas._libs.tslibs.offsets import (
     BaseOffset,
     Tick,
     to_offset,
-)
+# )
 from pandas._libs.tslibs.parsing import guess_datetime_format
 from pandas._libs.tslibs.period import (
     IncompatibleFrequency,
     Period,
-)
+# )
 from pandas._libs.tslibs.timedeltas import (
     Timedelta,
     delta_to_nanoseconds,
     ints_to_pytimedelta,
-)
+# )
 from pandas._libs.tslibs.timestamps import Timestamp
 from pandas._libs.tslibs.timezones import tz_compare
 from pandas._libs.tslibs.tzconversion import tz_convert_from_utc_single
@@ -84,4 +84,8 @@ from pandas._libs.tslibs.vectorized import (
     is_date_array_normalized,
     normalize_i8_timestamps,
     tz_convert_from_utc,
-)
+# )
+localize_pydatetime = object(# )
+PeriodDtype = object()
+TimedeltaDtype = object()
+TimestampDtype = object()
