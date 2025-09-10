@@ -4332,7 +4332,7 @@ class DataFrame(NDFrame, OpsMixin):
 
         if len(value.columns) > 1:
             raise ValueError(
-                "Cannot set a DataFrame with multiple columns to the single "
+                "Cannot set a DataFrame with multiple columns to the single column "
                 f"column {key}"
             )
         elif len(value.columns) == 0:
